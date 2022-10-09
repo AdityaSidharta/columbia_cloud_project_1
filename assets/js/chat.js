@@ -51,6 +51,9 @@ $(document).ready(function() {
       .then((response) => {
         console.log(response);
         var data = response.data;
+        console.log(data);
+        console.log(data.messages);
+        console.log(data.messages.length > 0);
 
         if (data.messages && data.messages.length > 0) {
           console.log('received ' + data.messages.length + ' messages');
