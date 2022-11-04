@@ -33,8 +33,6 @@ def lambda_handler(event, context):
     if (session_intent['name'] == 'DiningSuggestionsIntent') & (session_intent['state'] == 'ReadyForFulfillment') & (session_intent['confirmationState'] == 'Confirmed'):
         slots = session_intent['slots']
         result = {k: v['value']['interpretedValue'] for k, v in slots.items()}
-        print("Sending result to SQS : {}".format(result))
-
         response = sqs.send_message(
               QueueUrl=queue_url,
               DelaySeconds=10,

@@ -1,3 +1,17 @@
+from opensearchpy import OpenSearch, RequestsHttpConnection, AWSV4SignerAuth
+import boto3
+import time
+
+opensearch_host = 'search-project1-fcmtfzdorczceupsri4f5e376y.us-east-1.es.amazonaws.com'
+region = 'us-east-1'
+port = 443
+index_name = 'restaurant'
+queue_name = 'Proj1SQS'
+size = 3
+max_timeout = 60
+sleep_time = 10
+
+
 def lambda_handler(event, context):
     sqs = boto3.resource('sqs')
     queue = sqs.get_queue_by_name(QueueName=queue_name)
@@ -68,7 +82,7 @@ def lambda_handler(event, context):
                 )
 
                 try:
-                    location = response['Item']['location']['S']
+                    location = response['Item']['address']['S']
                     name = response['Item']['name']['S']
                     locations.append(location)
                     names.append(name)
@@ -128,7 +142,7 @@ def lambda_handler(event, context):
                 'names': names,
                 'locations': locations,
                 'subject': subject,
-                'message': message,
+                'message': message_body,
                 'message_id': message_id
             }
     else:
